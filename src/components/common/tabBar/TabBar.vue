@@ -20,7 +20,7 @@ export default {
     width: 100%;
     height: 49px;
     display: flex;
-    position: absolute;
+    position: fixed;
     left: 0;
     bottom: 0;
     right: 0;
