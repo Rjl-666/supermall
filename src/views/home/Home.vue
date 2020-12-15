@@ -1,16 +1,21 @@
 <template>
   <div id="home">
       <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-      <home-swiper :banners="banners"/>
-      <recommend-view :recommends="recommends"/>
-      <feature-view/>
-      <tab-control 
-                  class="tab-control" 
-                  :titles="['流行', '新款', '精选']"
-                  @tabClick="tabClick"
-                  />
-      <!-- <goods-list :goods="goods[type].list"/> -->
-      <goods-list :goods="showGoods" :background="background"/>
+      <div class="wrapper">
+        <div class="content">
+          <home-swiper :banners="banners"/>
+          <recommend-view :recommends="recommends"/>
+          <feature-view/>
+          <tab-control 
+                      class="tab-control" 
+                      :titles="['流行', '新款', '精选']"
+                      @tabClick="tabClick"
+                      />
+          <!-- <goods-list :goods="goods[type].list"/> -->
+          <goods-list :goods="showGoods" :background="background"/>
+        </div>
+      </div>
+      
 
       <ul>
         <li>列表</li>
@@ -128,6 +133,12 @@ import axios from 'axios'
   import GoodsList from 'components/content/goods/GoodsList'
 
   import {getHomeMultiData, getHomeGoods} from 'network/home'
+
+  import BScroll from '@better-scroll/core'
+  import Pullup from '@better-scroll/pull-up'
+
+  // 注册插件
+  BScroll.use(Pullup)
 
 
   export default {

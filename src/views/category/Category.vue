@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" ref="scroll">
       <ul class="content">
         <li>分类列表1</li>
         <li>分类列表2</li>
@@ -106,7 +106,12 @@
 </template>
 
 <script>
-import betterscroll from 'better-scroll'
+// import betterscroll from 'better-scroll'
+import BScroll from '@better-scroll/core'
+import Pullup from '@better-scroll/pull-up'
+
+// 注册插件
+BScroll.use(Pullup)
 export default {
   name: 'Category',
   data() {
@@ -115,9 +120,26 @@ export default {
     }
   },
   mounted() {
-    this.scroll = new betterscroll(document.querySelector('.wrapper'), {
-
+    
+    this.bscroll = new BScroll(this.$refs.scroll, {
+        probeType:3,
+        pullUpLoad:true
     })
+    console.log(this.bscroll)
+    this.bscroll.on('pillingUp', () => {
+      console.log('aaa')
+    })
+
+
+    // this.scroll = new BScroll('.wrapper', {
+    //   pullUpLoad: true
+    // })
+    // this.scroll.on('scroll', (position) => {
+    //   console.log(position);
+    // })
+    // this.scroll.on('pillingUp', () => {
+    //   console.log('上拉加载')
+    // })
   },
 }
 </script>
