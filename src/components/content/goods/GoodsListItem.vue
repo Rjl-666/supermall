@@ -1,6 +1,6 @@
 <template>
-  <div class="goods-item">
-      <div class="img">{{goodsItem}}</div>
+  <div class="goods-item" :background="background">
+      <div class="img" :style="getstyle">{{goodsItem}}</div>
       <p>商品名称</p>
       <p><span>$200.00</span><span>20</span></p>
   </div>
@@ -15,6 +15,17 @@ export default {
             default() {
                 return 0
             }
+        },
+        background: {
+            type:String,
+            default() {
+                return '#eee'
+            }
+        }
+    },
+    computed: {
+        getstyle() {
+            return {background:this.background}
         }
     }
 }
@@ -30,7 +41,7 @@ export default {
     .img{
         width: 90%;
         height: 150px;
-        background-color: #eeeeee;
+        /* background-color: #eeeeee; */
         margin-left: 5%;
     }
 </style>

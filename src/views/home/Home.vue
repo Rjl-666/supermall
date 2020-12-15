@@ -4,9 +4,13 @@
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends"/>
       <feature-view/>
-      <tab-control class="tab-control" :titles="['流行', '新款', '精选']"/>
-      <!-- <goods-list :goods="goods['pop'].list"/> -->
-      <goods-list :goods="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]"/>
+      <tab-control 
+                  class="tab-control" 
+                  :titles="['流行', '新款', '精选']"
+                  @tabClick="tabClick"
+                  />
+      <!-- <goods-list :goods="goods[type].list"/> -->
+      <goods-list :goods="showGoods" :background="background"/>
 
       <ul>
         <li>列表</li>
@@ -144,7 +148,9 @@ import axios from 'axios'
           pop: {page: 0, list: []},
           new: {page: 0, list: []},
           sell: {page: 0, list: []},
-        }
+        },
+        currentType:'pop',
+        background: '#eee'
       }
     },
     created() {
@@ -155,6 +161,29 @@ import axios from 'axios'
       this.getData()
     },
     methods: {
+      /* 
+        事件监听
+      */
+      tabClick(index) {
+        switch(index) {
+          case 0:
+            this.currentType = 'pop'
+            this.background = '#eee'
+            break
+          case 1:
+            this.currentType = 'new'
+            this.background = 'yellow'
+            break
+          case 2:
+            this.currentType = 'sell'
+            this.background = 'green'
+            break
+        }
+      },
+
+      /* 
+        网络请求
+      */
       getData() {
                 axios.get('data.json').then(res => {
                     console.log(res);
@@ -175,9 +204,17 @@ import axios from 'axios'
           // this.goods[type].list.push(...res.data)
           this.goods[type].page + 1
         })
-      }
-      
+      }, 
     },
+    computed: {
+      showGoods() {
+        let arr = []
+        for(let i=1; i<=30; i++){
+          arr.push(i)
+        }
+        return arr
+      }
+    }
   }
 </script>
 

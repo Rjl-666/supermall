@@ -1,6 +1,6 @@
 <template>
   <div class="goods">
-      <goods-list-item v-for="item in goods" :key="item" :goods-item="item" />
+      <goods-list-item v-for="item in goods" :key="item" :goods-item="item" :background="background"/>
   </div>
 </template>
 
@@ -18,6 +18,12 @@ export default {
             type: Array,
             default() {
                 return ['a', 'b', 'c']
+            }
+        },
+        background: {
+            type:String,
+            default() {
+                return '#eee'
             }
         }
     }
