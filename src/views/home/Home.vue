@@ -16,7 +16,7 @@
         </div>
       </div>
       
-
+        
       <ul>
         <li>列表</li>
         <li>列表</li>
@@ -136,6 +136,7 @@ import axios from 'axios'
 
   import BScroll from '@better-scroll/core'
   import Pullup from '@better-scroll/pull-up'
+  
 
   // 注册插件
   BScroll.use(Pullup)
