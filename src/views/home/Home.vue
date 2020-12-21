@@ -2,123 +2,20 @@
   <div id="home">
       <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
       <div class="wrapper">
-        <div class="content">
-          <home-swiper :banners="banners"/>
-          <recommend-view :recommends="recommends"/>
-          <feature-view/>
-          <tab-control 
-                      class="tab-control" 
-                      :titles="['流行', '新款', '精选']"
-                      @tabClick="tabClick"
-                      />
-          <!-- <goods-list :goods="goods[type].list"/> -->
-          <goods-list :goods="showGoods" :background="background"/>
-        </div>
+        <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"/>
+      <recommend-view :recommends="recommends"/>
+      <feature-view/>
+      <tab-control 
+                  :class="{fixed:aa}" 
+                  :titles="['流行', '新款', '精选']"
+                  @tabClick="tabClick"
+                  ref="tabControl"
+                  
+                  />
+      <!-- <goods-list :goods="goods[type].list"/> -->
+      <goods-list :goods="showGoods" :background="background"/>
       </div>
       
-        
-      <ul>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-        <li>列表</li>
-      </ul>
   </div>
 </template>
 
@@ -162,7 +59,9 @@ import axios from 'axios'
           sell: {page: 0, list: []},
         },
         currentType:'pop',
-        background: '#eee'
+        background: '#eee',
+        topOffsetTop:0,
+        aa:false
       }
     },
     created() {
@@ -192,7 +91,29 @@ import axios from 'axios'
             break
         }
       },
+      swiperImageLoad() {
+        // console.log('-------------')
+        // console.log(this.$refs.tabControl.$el.offsetTop)
+        this.topOffsetTop = this.$refs.tabControl.$el.offsetTop - 44
+      },
+      tabScroll() {
+        document.addEventListener('scroll',() => {
+        //  console.log(window.pageYOffset)
+        // console.log(window.scrollTop)
+        // console.log(document.documentElement.scrollTop)
+        // console.log(document.documentElement.scrollTop)
+         this.aa = window.pageYOffset >= this.topOffsetTop ? true : false
 
+         let pmHeight = document.documentElement.clientHeight
+         let zsHeight = document.documentElement.scrollHeight
+         let py = document.documentElement.scrollTop
+          if(pmHeight + py == zsHeight){
+            console.log('到底了')
+          }
+            console.log(pmHeight)
+        console.log(zsHeight)
+        console.log(py)
+      })},
       /* 
         网络请求
       */
@@ -226,12 +147,24 @@ import axios from 'axios'
         }
         return arr
       }
-    }
+    },
+    mounted() {
+      this.tabScroll()
+
+      // document.addEventListener('scroll',() => {
+        
+      
+      
+      // })
+      
+      
+    },
   }
 </script>
 
 <style>
   #home{
+    position: relative;
     padding-top: 44px;
   }
   .home-nav{
@@ -244,9 +177,18 @@ import axios from 'axios'
     background-color: rgb(255,142,152);
     color: #fff;
   }
-  .tab-control{
-    position: sticky;
+  .wrapper{
+    padding-bottom:49px ;
+    /* width: 100%;
+    height: calc(100vh - 44px - 49px);
+    position: fixed;
+    top: 44px;
+    overflow: scroll; */
+  }
+  .fixed{
+    position: fixed;
     top: 44px;
     background-color:#fff ;
+    z-index: 10;
   }
 </style>
