@@ -1,5 +1,5 @@
 <template>
-  <div class="goods-item" :background="background">
+  <div class="goods-item" @click="itemClick" :background="background">
       <div class="img" :style="getstyle">{{goodsItem}}</div>
       <p>商品名称</p>
       <p><span>$200.00</span><span>20</span></p>
@@ -26,6 +26,11 @@ export default {
     computed: {
         getstyle() {
             return {background:this.background}
+        }
+    },
+    methods: {
+        itemClick() {
+            this.$router.push('/details/' + this.goodsItem)
         }
     }
 }

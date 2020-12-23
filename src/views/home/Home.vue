@@ -1,8 +1,9 @@
 <template>
   <div id="home">
       <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-      <div class="wrapper">
-        <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"/>
+
+      <div class="wrapper" ref="gundong">
+      <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"/>
       <recommend-view :recommends="recommends"/>
       <feature-view/>
       <tab-control 
@@ -10,17 +11,17 @@
                   :titles="['流行', '新款', '精选']"
                   @tabClick="tabClick"
                   ref="tabControl"
-                  
                   />
-      <!-- <goods-list :goods="goods[type].list"/> -->
-      <goods-list :goods="showGoods" :background="background"/>
+      <goods-list :goods="goods[currentType].list" :background="background"/>
       </div>
+
+      
       
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+  import axios from 'axios'
   import HomeSwiper from './childComps/HomeSwiper'
   import RecommendView from './childComps/RecommendView'
   import FeatureView from './childComps/FeatureView'
@@ -31,14 +32,6 @@ import axios from 'axios'
 
   import {getHomeMultiData, getHomeGoods} from 'network/home'
 
-  import BScroll from '@better-scroll/core'
-  import Pullup from '@better-scroll/pull-up'
-  
-
-  // 注册插件
-  BScroll.use(Pullup)
-
-
   export default {
     name: 'Home',
     components: {
@@ -48,6 +41,9 @@ import axios from 'axios'
       FeatureView,
       TabControl,
       GoodsList
+    },
+    destroyed() {
+      console.log('home销毁了')
     },
     data() {
       return {
@@ -61,7 +57,8 @@ import axios from 'axios'
         currentType:'pop',
         background: '#eee',
         topOffsetTop:0,
-        aa:false
+        aa:false,
+        pageY:'',
       }
     },
     created() {
@@ -104,15 +101,21 @@ import axios from 'axios'
         // console.log(document.documentElement.scrollTop)
          this.aa = window.pageYOffset >= this.topOffsetTop ? true : false
 
-         let pmHeight = document.documentElement.clientHeight
-         let zsHeight = document.documentElement.scrollHeight
-         let py = document.documentElement.scrollTop
-          if(pmHeight + py == zsHeight){
-            console.log('到底了')
+         let pmHeight = document.documentElement.clientHeight    // 页面高度
+         let zsHeight = document.documentElement.scrollHeight    // 真实内容高度
+         let py = document.documentElement.scrollTop             // 偏移值（滚动距离）
+         this.pageY = py
+          if(pmHeight + py >= zsHeight - 1){
+            // console.log('到底了')
+            this.goods[this.currentType].page+1
+            // console.log(this.goods[this.currentType].page+1)
+            // console.log(this.goods)
+            this.getHomeGoods(this.currentType)
           }
-            console.log(pmHeight)
-        console.log(zsHeight)
-        console.log(py)
+        // console.log(pmHeight)
+        // console.log(zsHeight)
+        // console.log('偏移'+py)
+        // console.log('pageY'+this.pageY)
       })},
       /* 
         网络请求
@@ -131,12 +134,17 @@ import axios from 'axios'
         })
       },
       getHomeGoods(type) {
-        let page = this.goods[type].page + 1
-        getHomeGoods(type, page).then(res => {
-          console.log(res)
-          // this.goods[type].list.push(...res.data)
-          this.goods[type].page + 1
-        })
+        this.goods[type].page += 1
+        for(let i=this.goods[type].list.length+1; i<=30*(this.goods[type].page); i++){
+          this.goods[type].list.push(i)
+        }
+
+        // let page = this.goods[type].page + 1
+        // getHomeGoods(type, page).then(res => {
+        //   console.log(res)
+        //   // this.goods[type].list.push(...res.data)
+        //   this.goods[type].page + 1
+        // })
       }, 
     },
     computed: {
@@ -150,14 +158,16 @@ import axios from 'axios'
     },
     mounted() {
       this.tabScroll()
-
-      // document.addEventListener('scroll',() => {
-        
-      
-      
-      // })
-      
-      
+    },
+    activated() {
+      // console.log(this.saveY)
+      window.scrollTo(0,this.saveY)
+      // this.$refs.gundong.scrollTo(this.saveY)
+      // console.log(this.$refs.gundong)
+    },
+    deactivated() {
+      this.saveY = this.pageY
+      // console.log(this.pageY)
     },
   }
 </script>
