@@ -1,0 +1,11 @@
+import {request} from './request'
+
+export function getDetail(id) {
+    // return id
+    return request({
+        url: '/detail',
+        params:{
+            id
+        }
+    })
+}

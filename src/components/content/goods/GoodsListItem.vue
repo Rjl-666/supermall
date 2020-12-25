@@ -36,7 +36,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     .goods-item{
         margin-top: 15px;
         width: 48%;

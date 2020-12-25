@@ -35,7 +35,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     .tab-control{
         width: 100%;
         height: 40px;

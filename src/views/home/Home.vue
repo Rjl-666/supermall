@@ -131,6 +131,7 @@
         getHomeMultiData().then(res => {
         this.banners = res.data.data.banner.list
         this.recommends = res.data.data.recommend.list
+        // console.log('aaaaaaaaaaa')
         })
       },
       getHomeGoods(type) {
@@ -172,7 +173,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   #home{
     position: relative;
     padding-top: 44px;

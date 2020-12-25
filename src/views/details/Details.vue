@@ -6,6 +6,8 @@
 
 <script>
 import DetailNavBar from './childComps/DetailNavBar'
+
+import {getDetail} from 'network/details'
 export default {
     name: 'Datails',
     components: {
@@ -18,11 +20,17 @@ export default {
     },
     created() {
         this.id = this.$route.params.id
+        getDetail(this.id).then(res => {
+            console.log(res)
+        })
+        
     },
-    
+    methods: {
+        
+    },
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>
