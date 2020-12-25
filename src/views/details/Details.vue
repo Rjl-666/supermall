@@ -1,6 +1,7 @@
 <template>
   <div id="detail">
       <detail-nav-bar />
+      
   </div>
 </template>
 

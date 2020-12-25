@@ -129,9 +129,10 @@
       },
       getHomeMultiData() {
         getHomeMultiData().then(res => {
-        this.banners = res.data.data.banner.list
-        this.recommends = res.data.data.recommend.list
-        // console.log('aaaaaaaaaaa')
+          console.log(res)
+          this.banners = res.data.data.banner.list
+          this.recommends = res.data.data.recommend.list
+          // console.log('aaaaaaaaaaa')
         })
       },
       getHomeGoods(type) {
